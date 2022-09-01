@@ -1,4 +1,6 @@
 import axios from "axios";
+import { drug } from "../types/drugs";
+import { startAndEndDate } from "../types/weeks";
 
 import applyInterceptorsTo from "./axiosInterceptors";
 
@@ -9,11 +11,7 @@ const baseApi = axios.create({
 const useThisApi = applyInterceptorsTo(baseApi);
 
 //drug 관련 API -> drugApi
-const apiDrugAdd = async (data: {
-  productName: string;
-  customColor: string;
-  done: boolean;
-}) => {
+const apiDrugAdd = async (data: drug) => {
   const dataApiDrugAdd = await useThisApi.post("", data);
   return dataApiDrugAdd;
 };
@@ -23,19 +21,12 @@ const apiDrugList = async (path: string) => {
   return dataApiDrugList;
 };
 
-const apiDrugCheck = async (data: {
-  productName: string;
-  usedAt: string;
-  done: boolean;
-}) => {
+const apiDrugCheck = async (data: drug) => {
   const dataApiDrugCheck = await useThisApi.patch("/week", data);
   return dataApiDrugCheck;
 };
 
-const apiDrugWeek = async (
-  path: string,
-  params: { startDate: string; endDate: string }
-) => {
+const apiDrugWeek = async (path: string, params: startAndEndDate) => {
   const dataApiDrugWeek = await useThisApi.get(`/${path}/week`, {
     params: params,
   });
@@ -43,17 +34,9 @@ const apiDrugWeek = async (
 };
 
 export const drugApi = {
-  apiDrugAdd: (data: {
-    productName: string;
-    customColor: string;
-    done: boolean;
-  }) => apiDrugAdd(data),
+  apiDrugAdd: (data: drug) => apiDrugAdd(data),
   apiDrugList: (path: string) => apiDrugList(path),
-  apiDrugCheck: (data: {
-    productName: string;
-    usedAt: string;
-    done: boolean;
-  }) => apiDrugCheck(data),
-  apiDrugWeek: (path: string, params: { startDate: string; endDate: string }) =>
+  apiDrugCheck: (data: drug) => apiDrugCheck(data),
+  apiDrugWeek: (path: string, params: startAndEndDate) =>
     apiDrugWeek(path, params),
 };

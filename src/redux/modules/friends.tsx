@@ -1,34 +1,41 @@
 import { friendApi } from "../../api/friendApi";
+import { friendList } from "../../types/friends";
 
 // Actions
 const LOAD = "friend/LOAD";
 
-const initialState = {
+type FriendState = {
+  friends: friendList;
+};
+
+const initialState: FriendState = {
   friends: [],
 };
 
-export function loadFriendData(myFriend) {
+export function loadFriendData(myFriend:friendList) {
   return { type: LOAD, friends: myFriend };
 }
 
 //middlewares
 export function loadFriendDataMW() {
-  return function (dispatch) {
-    friendApi.apiFriendList()
+  return function (dispatch:any) {
+    friendApi
+      .apiFriendList()
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         dispatch(loadFriendData(res.data));
       })
       .catch((err) => console.log(err));
   };
 }
 
-export const keepFriendDataMW = (username) => {
-  return function (dispatch) {
+export const keepFriendDataMW = (username:string) => {
+  return function (dispatch:any) {
     const data = {
       friendname: username,
-    }
-    friendApi.apiFriendAdd(data)
+    };
+    friendApi
+      .apiFriendAdd(data)
       .then((res) => {
         dispatch(loadFriendDataMW());
       })
@@ -36,7 +43,7 @@ export const keepFriendDataMW = (username) => {
   };
 };
 
-export default function reducer(state = initialState, action = {}) {
+export default function reducer(state = initialState, action:any = {}) {
   //매개변수에 값이 안들어오면 넣을 초기상태 값 -> 함수(state = {})
   //dispatch는 action함수에 접근하여 리턴값으로 reducer의 2번째 매개변수(action)를 제공
   switch (action.type) {

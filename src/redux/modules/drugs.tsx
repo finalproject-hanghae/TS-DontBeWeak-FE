@@ -1,24 +1,30 @@
 import { drugApi } from "../../api/drugApi";
+import { drugList, drug } from "../../types/drugs";
 
 // Actions
-const KEEP = "drug/KEEP";
-const LOAD = "drug/LOAD";
+const KEEP = "drug/KEEP" as const;
+const LOAD = "drug/LOAD" as const;
 
-const initialState = {
+
+type DrugState = {
+  drugs: drugList;
+};
+
+const initialState: DrugState = {
   drugs: [],
 };
 
-export function keepDrugData(newDrug) {
+export function keepDrugData(newDrug: drug) {
   return { type: KEEP, drugs: newDrug };
 }
 
-export function loadDrugData(myDrug) {
+export function loadDrugData(myDrug: drugList) {
   return { type: LOAD, drugs: myDrug };
 }
 
 //middlewares
-export function loadDrugDataMW(username) {
-  return function (dispatch) {
+export function loadDrugDataMW(username: string) {
+  return function (dispatch:any) {
     drugApi
       .apiDrugList(username)
       .then((res) => {
@@ -28,8 +34,8 @@ export function loadDrugDataMW(username) {
   };
 }
 
-export const keepDrugDataMW = (tmpDrugData) => {
-  return function (dispatch) {
+export const keepDrugDataMW = (tmpDrugData: drug) => {
+  return function (dispatch:any) {
     drugApi
       .apiDrugAdd(tmpDrugData)
       .then((res) => {
@@ -40,7 +46,7 @@ export const keepDrugDataMW = (tmpDrugData) => {
   };
 };
 
-export default function reducer(state = initialState, action = {}) {
+export default function reducer(state = initialState, action:any = {}) {
   //매개변수에 값이 안들어오면 넣을 초기상태 값 -> 함수(state = {})
   //dispatch는 action함수에 접근하여 리턴값으로 reducer의 2번째 매개변수(action)를 제공
   switch (action.type) {

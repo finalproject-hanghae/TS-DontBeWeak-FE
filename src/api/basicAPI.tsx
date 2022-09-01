@@ -1,4 +1,5 @@
 import axios from "axios";
+import { loginData, signupData } from "../types/users";
 
 import applyInterceptorsTo from "./axiosInterceptors";
 
@@ -9,17 +10,12 @@ const baseApi = axios.create({
 const useThisApi = applyInterceptorsTo(baseApi);
 
 //user 관련 API -> userApi
-const apiSignup = async (data: {
-  username: string;
-  nickname: string;
-  password: string;
-  passwordCheck: string;
-}) => {
+const apiSignup = async (data: signupData) => {
   const dataApiSignup = await useThisApi.post("/user/signup", data);
   return dataApiSignup;
 };
 
-const apiLogin = async (data: { username: string; password: string }) => {
+const apiLogin = async (data: loginData) => {
   const dataApiLogin = await useThisApi.post("/login", data);
   return dataApiLogin;
 };
@@ -30,12 +26,7 @@ const apiUser = async () => {
 };
 
 export const userApi = {
-  apiSignup: (data: {
-    username: string;
-    nickname: string;
-    password: string;
-    passwordCheck: string;
-  }) => apiSignup(data),
-  apiLogin: (data: { username: string; password: string }) => apiLogin(data),
+  apiSignup: (data: signupData) => apiSignup(data),
+  apiLogin: (data: loginData) => apiLogin(data),
   apiUser: () => apiUser(),
 };
