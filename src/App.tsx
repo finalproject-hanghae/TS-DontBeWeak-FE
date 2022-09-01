@@ -1,16 +1,14 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
 import "./App.css";
-import { RootState } from "./redux/configStore";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { loadDrugDataMW } from "./redux/modules/drugs";
+import { loadWeekDataMW } from "./redux/modules/weeks";
 
 function App() {
   const dispatch = useAppDispatch();
   const hajun = useAppSelector((state) => state.drugs.drugs);
   React.useEffect(() => {
-    dispatch(loadDrugDataMW("hajun"));
+    dispatch(loadWeekDataMW("hajun",{startDate:"20220828", endDate:"20220903"}));
   }, []);
   console.log(hajun);
 
